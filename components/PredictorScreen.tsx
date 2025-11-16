@@ -13,8 +13,8 @@ interface PredictorScreenProps {
 }
 
 const MenuIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+    <path fillRule="evenodd" d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z" clipRule="evenodd" />
   </svg>
 );
 
@@ -47,101 +47,116 @@ const PredictorView = React.memo((props: {
     onNextRound: () => void;
 }) => {
     const { t } = useLanguage();
+    const [currentTime, setCurrentTime] = useState('');
 
     useEffect(() => {
-        const sparkleContainer = document.getElementById('sparkles');
-        if (!sparkleContainer) return;
-
-        // Prevent adding sparkles if they already exist
-        if (sparkleContainer.children.length > 0) return;
-        
-        const sparkleCount = 40;
-        for (let i = 0; i < sparkleCount; i++) {
-            const sparkle = document.createElement('div');
-            sparkle.className = 'sparkle';
-            sparkle.style.top = `${Math.random() * 100}%`;
-            sparkle.style.left = `${Math.random() * 100}%`;
-            const delay = Math.random() * 5;
-            const duration = Math.random() * 3 + 2;
-            sparkle.style.animation = `sparkle-anim ${duration}s linear ${delay}s infinite`;
-            sparkleContainer.appendChild(sparkle);
-        }
+        const updateTime = () => {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            setCurrentTime(`${hours}:${minutes}`);
+        };
+        updateTime();
+        const timer = setInterval(updateTime, 1000 * 30); // Update every 30 seconds
+        return () => clearInterval(timer);
     }, []);
+
 
     const buttonAction = props.isRoundComplete ? props.onNextRound : props.onGetSignal;
     const buttonText = props.isRoundComplete ? t('nextRound') : (props.isPredicting ? t('predicting') : t('getSignal'));
     const isButtonDisabled = props.isPredicting;
 
     return (
-        <div className="w-full h-full flex flex-col items-center justify-between relative overflow-hidden p-6 font-russo text-white">
-            <div id="sparkles" className="absolute inset-0 pointer-events-none z-0"></div>
+        <div className="w-full h-full bg-[#f0f0f0] text-black flex flex-col font-poppins relative overflow-hidden">
             <style>{`
-                @keyframes sparkle-anim {
-                  0%, 100% { transform: scale(0); opacity: 0; }
-                  50% { transform: scale(1); opacity: 1; }
-                  99% { opacity: 0; }
+                .swoop-bg::before {
+                    content: '';
+                    position: absolute;
+                    top: -25vh;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 200vw;
+                    height: 68vh;
+                    background: linear-gradient(180deg, #d92121, #b50000);
+                    border-radius: 0 0 50% 50%;
+                    z-index: 0;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
                 }
-                .sparkle {
-                  position: absolute;
-                  width: 3px;
-                  height: 3px;
-                  background: rgba(255, 100, 100, 0.8);
-                  border-radius: 50%;
-                  box-shadow: 0 0 5px rgba(255, 100, 100, 1);
+                .wandering-arc-1 {
+                    position: absolute;
+                    inset: 0;
+                    border-radius: 50%;
+                    border: 5px solid transparent;
+                    border-top-color: #d10000;
+                    animation: spin-slow 5s linear infinite;
                 }
-                @keyframes pulse-slow {
-                  0%, 100% { box-shadow: 0 0 10px 0px rgba(255, 82, 82, 0.3); opacity: 0.8; transform: scale(1); }
-                  50% { box-shadow: 0 0 25px 8px rgba(255, 82, 82, 0.6); opacity: 1; transform: scale(1.02); }
+                .wandering-arc-2 {
+                    position: absolute;
+                    inset: 10px;
+                    border-radius: 50%;
+                    border: 4px solid transparent;
+                    border-top-color: #e53e3e;
+                    border-right-color: #e53e3e;
+                    animation: spin-medium 7s linear infinite reverse;
                 }
-                @keyframes pulse-medium {
-                  0%, 100% { opacity: 0.7; }
-                  50% { opacity: 1; }
+                .wandering-arc-3 {
+                    position: absolute;
+                    inset: 0; 
+                    border-radius: 50%;
+                    border: 5px solid transparent;
+                    border-left-color: #d10000;
+                    animation: spin-slow 5s linear infinite;
+                    transform: rotate(180deg);
                 }
+                @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+                @keyframes spin-medium { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
             `}</style>
+            <div className="absolute inset-0 swoop-bg"></div>
 
-            <header className="w-full flex justify-between items-start z-10">
-                <h1 className="text-4xl sm:text-5xl font-bold tracking-wider leading-tight" style={{textShadow: '0 0 10px rgba(255,255,255,0.3)'}}>
-                    Aviator<br/>Predictor
-                </h1>
-                <button onClick={props.onOpenSidebar} className="p-2 text-white" aria-label={t('openMenu')}>
-                    <MenuIcon className="w-8 h-8" />
-                </button>
-            </header>
+            <div className="relative z-10 flex-grow w-full h-full flex flex-col items-center justify-between">
+                <header className="w-full text-left p-6 pt-10">
+                    <h1 className="text-4xl font-extrabold text-white tracking-normal leading-tight">
+                        AVIATOR<br/>PREDICTOR VIP
+                    </h1>
+                </header>
+                
+                <main className="flex-grow w-full flex flex-col items-center justify-center px-4 -mt-24">
+                    <img 
+                        src="https://i.postimg.cc/W4cFfhV3/Picsart-25-11-16-12-52-34-932.png" 
+                        alt="Aviator Plane" 
+                        className="w-full max-w-sm drop-shadow-[0_10px_15px_rgba(0,0,0,0.2)] select-none z-10"
+                        draggable="false" onContextMenu={(e) => e.preventDefault()}
+                    />
 
-            <main className="flex-grow flex flex-col items-center justify-center z-10 w-full my-4">
-                <img 
-                  src="https://i.postimg.cc/FzvNHVnG/Picsart-25-11-15-11-35-00-149.png" 
-                  alt="Aviator Plane" 
-                  className="w-full max-w-sm drop-shadow-[0_10px_15px_rgba(255,50,50,0.3)] select-none"
-                  draggable="false" onContextMenu={(e) => e.preventDefault()}
-                />
+                    <div className="relative w-48 h-48 md:w-56 md:h-56 flex items-center justify-center -mt-10 md:-mt-12">
+                        <div className="wandering-arc-1"></div>
+                        <div className="wandering-arc-2"></div>
+                        <div className="wandering-arc-3"></div>
+                        <div className="absolute inset-[24px] rounded-full border border-red-200"></div>
+                        
+                        <p className="font-sans font-black text-black whitespace-nowrap text-5xl md:text-6xl">
+                           {props.displayValue}
+                        </p>
+                    </div>
 
-                <div className="relative w-48 h-48 md:w-56 md:h-56 flex items-center justify-center mt-8">
-                    <div 
-                        className="absolute inset-0 rounded-full border-4 border-red-500/30 animate-pulse-slow"
-                        style={{animationDuration: '3s'}}
-                    ></div>
-                    <div 
-                        className="absolute w-[85%] h-[85%] rounded-full border-4 border-red-500/50 animate-pulse-medium"
-                        style={{animation: 'pulse-medium 2s ease-in-out infinite reverse'}}
-                    ></div>
-                    <div className="absolute w-[70%] h-[70%] bg-red-900/20 rounded-full"></div>
+                    <div className="w-full max-w-xs mt-8">
+                         <button 
+                            onClick={buttonAction}
+                            disabled={isButtonDisabled}
+                            className="w-full py-4 bg-[#d10000] rounded-xl text-white font-bold text-xl tracking-wider uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:bg-red-800 active:scale-95"
+                        >
+                            {buttonText}
+                        </button>
+                    </div>
+                </main>
 
-                    <p className={`font-bold font-mono transition-colors duration-300 whitespace-nowrap text-5xl md:text-6xl ${props.isRoundComplete ? 'text-white' : 'text-gray-300'}`} style={{textShadow: '0 0 20px rgba(255, 100, 100, 0.9)'}}>
-                        {props.displayValue}
-                    </p>
-                </div>
-            </main>
-
-            <footer className="w-full max-w-sm z-10 py-4">
-                <button 
-                    onClick={buttonAction}
-                    disabled={isButtonDisabled}
-                    className="w-full py-4 bg-gradient-to-b from-red-500 to-red-700 rounded-xl text-white font-russo font-bold text-2xl tracking-wider uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_5px_20px_rgba(255,82,82,0.5)] hover:shadow-[0_5px_30px_rgba(255,82,82,0.7)] hover:scale-105 active:scale-100"
-                >
-                    {buttonText}
-                </button>
-            </footer>
+                <footer className="w-full h-20 bg-white flex items-center justify-between px-6 shadow-[0_-2px_10px_rgba(0,0,0,0.1)] mt-auto">
+                    <p className="text-4xl font-extrabold text-[#d10000] font-sans tracking-tighter">{currentTime}</p>
+                    <button onClick={props.onOpenSidebar} className="p-2 text-black" aria-label={t('openMenu')}>
+                        <MenuIcon className="w-8 h-8" />
+                    </button>
+                </footer>
+            </div>
         </div>
     );
 });
@@ -232,7 +247,7 @@ const PredictorScreen: React.FC<PredictorScreenProps> = ({ user, onLogout }) => 
   const handleNextRound = useCallback(() => {
     if (isPredicting) return;
     setPrediction(null);
-    setDisplayValue("0.00x");
+    setDisplayValue("?.??x");
     setIsRoundComplete(false);
   }, [isPredicting]);
 
