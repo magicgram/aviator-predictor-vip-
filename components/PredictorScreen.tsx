@@ -67,7 +67,7 @@ const PredictorView = React.memo((props: {
     const isButtonDisabled = props.isPredicting;
 
     return (
-        <div className="w-full h-full bg-[#f0f0f0] text-black flex flex-col font-poppins relative overflow-hidden">
+        <div className="w-full h-screen bg-[#f0f0f0] text-black flex flex-col font-poppins relative overflow-hidden">
             <style>{`
                 .swoop-bg::before {
                     content: '';
@@ -120,7 +120,7 @@ const PredictorView = React.memo((props: {
                     </h1>
                 </header>
                 
-                <main className="flex-grow w-full flex flex-col items-center justify-center px-4">
+                <main className="flex-grow w-full flex flex-col items-center justify-start pt-4 px-4">
                     <img 
                         src="https://i.postimg.cc/W4cFfhV3/Picsart-25-11-16-12-52-34-932.png" 
                         alt="Aviator Plane" 
@@ -128,7 +128,7 @@ const PredictorView = React.memo((props: {
                         draggable="false" onContextMenu={(e) => e.preventDefault()}
                     />
 
-                    <div className="relative w-48 h-48 md:w-56 md:h-56 flex items-center justify-center -mt-12 md:-mt-14">
+                    <div className="relative w-48 h-48 md:w-56 md:h-56 flex items-center justify-center mt-16">
                         <div className="wandering-arc-1"></div>
                         <div className="wandering-arc-2"></div>
                         <div className="wandering-arc-3"></div>
@@ -139,7 +139,7 @@ const PredictorView = React.memo((props: {
                         </p>
                     </div>
 
-                    <div className="w-full max-w-xs mt-4">
+                    <div className="w-full max-w-xs mt-8">
                          <button 
                             onClick={buttonAction}
                             disabled={isButtonDisabled}
