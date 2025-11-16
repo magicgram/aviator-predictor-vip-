@@ -114,21 +114,21 @@ const PredictorView = React.memo((props: {
             <div className="absolute inset-0 swoop-bg"></div>
 
             <div className="relative z-10 flex-grow w-full h-full flex flex-col items-center justify-between">
-                <header className="w-full text-left p-6 pt-10">
+                <header className="w-full text-left p-6 pt-8">
                     <h1 className="text-4xl font-extrabold text-white tracking-normal leading-tight">
                         AVIATOR<br/>PREDICTOR VIP
                     </h1>
                 </header>
                 
-                <main className="flex-grow w-full flex flex-col items-center justify-center px-4 -mt-24">
+                <main className="flex-grow w-full flex flex-col items-center justify-center px-4">
                     <img 
                         src="https://i.postimg.cc/W4cFfhV3/Picsart-25-11-16-12-52-34-932.png" 
                         alt="Aviator Plane" 
-                        className="w-full max-w-sm drop-shadow-[0_10px_15px_rgba(0,0,0,0.2)] select-none z-10"
+                        className="w-full max-w-[340px] drop-shadow-[0_10px_15px_rgba(0,0,0,0.2)] select-none z-10"
                         draggable="false" onContextMenu={(e) => e.preventDefault()}
                     />
 
-                    <div className="relative w-48 h-48 md:w-56 md:h-56 flex items-center justify-center -mt-10 md:-mt-12">
+                    <div className="relative w-48 h-48 md:w-56 md:h-56 flex items-center justify-center -mt-12 md:-mt-14">
                         <div className="wandering-arc-1"></div>
                         <div className="wandering-arc-2"></div>
                         <div className="wandering-arc-3"></div>
@@ -139,7 +139,7 @@ const PredictorView = React.memo((props: {
                         </p>
                     </div>
 
-                    <div className="w-full max-w-xs mt-8">
+                    <div className="w-full max-w-xs mt-4">
                          <button 
                             onClick={buttonAction}
                             disabled={isButtonDisabled}
