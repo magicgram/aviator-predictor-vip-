@@ -4,24 +4,12 @@ import { useLanguage } from '../contexts/LanguageContext';
 
 interface LoginScreenProps {
   onLoginSuccess: (playerId: string, predictionsLeft: number) => void;
-  onOpenSidebar: () => void;
-  onOpenGuide: () => void;
+  onOpenSidebar: () => void; // Prop retained for logic consistency
+  onOpenGuide: () => void; // Prop retained for logic consistency
 }
 
-const MenuIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-  </svg>
-);
-
-const GuideIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
-  </svg>
-);
-
 const UserIcon: React.FC = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-black" viewBox="0 0 20 20" fill="currentColor">
       <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
     </svg>
 );
@@ -123,7 +111,7 @@ const ReDepositMessage: React.FC<{
 });
 
 
-const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, onOpenGuide, onOpenSidebar }) => {
+const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
   const [playerId, setPlayerId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
@@ -210,35 +198,42 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, onOpenGuide, 
   const handleBackFromReDeposit = useCallback(() => setNeedsReDeposit(false), []);
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+    <div className="w-full min-h-screen flex flex-col items-center justify-between relative overflow-hidden bg-[#D81F25]">
+        {/* Decorative background elements */}
+        <div className="absolute bottom-0 left-0 w-full z-0 pointer-events-none">
+          <svg width="100%" height="auto" viewBox="0 0 1440 300" preserveAspectRatio="none">
+            <path d="M0,150 C400,250 1000,50 1440,150 L1440,300 L0,300 Z" fill="white"></path>
+            <path d="M0,160 C400,260 1000,60 1440,160" stroke="#D81F25" strokeWidth="3" fill="none"></path>
+          </svg>
+        </div>
+        <img 
+            src="https://i.postimg.cc/dVpjB84G/Picsart-25-11-16-14-04-08-046.png" 
+            alt="Aviator decorative" 
+            className="absolute bottom-4 right-8 w-24 h-auto z-0 pointer-events-none"
+            draggable="false" onContextMenu={(e) => e.preventDefault()}
+        />
+
       {needsDeposit ? (
-          <div className="flex-grow flex items-center justify-center p-4">
+          <div className="flex-grow w-full flex items-center justify-center p-4 z-10">
             <DepositMessage onBack={handleBackFromDeposit} onRegister={handleRegister} isRegistering={isRegistering} />
           </div>
       ) : needsReDeposit ? (
-          <div className="flex-grow flex items-center justify-center p-4">
+          <div className="flex-grow w-full flex items-center justify-center p-4 z-10">
             <ReDepositMessage onBack={handleBackFromReDeposit} onRegister={handleRegister} isRegistering={isRegistering} />
           </div>
       ) : (
           <>
-            <header className="absolute top-0 right-0 p-4 z-20 flex items-center gap-2">
-                <button onClick={onOpenGuide} className="p-2 rounded-full text-white hover:bg-white/10 transition-colors" aria-label={t('openGuide')}>
-                    <GuideIcon className="w-6 h-6" />
-                </button>
-                <button onClick={onOpenSidebar} className="p-2 rounded-full text-white hover:bg-white/10 transition-colors" aria-label={t('openMenu')}>
-                    <MenuIcon className="w-6 h-6" />
-                </button>
-            </header>
+            <main className="w-full max-w-xs flex flex-col items-center z-10 px-4 pt-16 flex-grow justify-center">
+                <img 
+                    src="https://i.postimg.cc/2y709VV8/Picsart-25-11-16-14-02-34-272.png" 
+                    alt="Aviator Predictor Pro Logo" 
+                    className="w-64 object-contain mb-10 drop-shadow-lg"
+                    draggable="false" onContextMenu={(e) => e.preventDefault()} 
+                />
 
-            <main className="w-full max-w-sm flex flex-col items-center z-10 px-4 pt-12 sm:pt-16 flex-grow justify-center">
-                <img src="https://i.postimg.cc/d0V9DrJY/Picsart-25-11-04-16-01-32-557.png" alt="Aviator Predictor Pro" className="w-48 object-contain -mb-2 drop-shadow-[0_10px_15px_rgba(255,50,50,0.3)]" draggable="false" onContextMenu={(e) => e.preventDefault()} />
-                <h1 className="font-luckiest text-[2.5rem] leading-none text-white tracking-wide text-center" style={{ textShadow: '0 0 10px rgba(255,255,255,0.3)' }}>
-                    AVIATOR PREDICTOR PRO
-                </h1>
-
-                <div className="w-full flex flex-col items-center space-y-5 mt-12 sm:mt-16">
+                <div className="w-full flex flex-col items-center space-y-5">
                     <div className="w-full">
-                        <label htmlFor="playerId" className="font-poppins text-white/80 text-xs font-bold mb-1.5 block text-left tracking-widest">
+                        <label htmlFor="playerId" className="font-poppins text-white text-xs font-semibold mb-1.5 block text-left tracking-wider">
                             {t('playerIdLabel').toUpperCase()}
                         </label>
                         <div className="relative flex items-center">
@@ -251,7 +246,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, onOpenGuide, 
                                 value={playerId}
                                 onChange={(e) => setPlayerId(e.target.value)}
                                 placeholder="12345678"
-                                className="w-full pl-12 pr-4 py-3.5 bg-black/30 border border-white/20 rounded-xl text-white placeholder-gray-400 font-sans text-lg focus:outline-none focus:ring-2 focus:ring-red-500/50 transition duration-300 shadow-md"
+                                className="w-full pl-12 pr-4 py-3 bg-white border-none rounded-lg text-black placeholder-gray-500 font-sans text-lg focus:outline-none focus:ring-2 focus:ring-red-300/50 transition duration-300 shadow-md"
                             />
                         </div>
                     </div>
@@ -259,11 +254,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, onOpenGuide, 
                     <button
                         onClick={handleContinue}
                         disabled={isLoading || !playerId}
-                        className="w-full py-4 bg-gradient-to-b from-red-500 to-red-700 rounded-xl text-white font-russo font-bold text-xl tracking-wider uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_5px_20px_rgba(255,82,82,0.5)] hover:shadow-[0_5px_30px_rgba(255,82,82,0.7)] hover:scale-105 active:scale-100"
+                        className="w-full py-3 bg-[#FCDADD] rounded-lg text-[#D81F25] font-russo font-bold text-xl tracking-wider uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:brightness-95 active:scale-95"
                     >
                         {isLoading ? (
                             <div className="flex justify-center items-center h-[28px]">
-                                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <svg className="animate-spin h-5 w-5 text-[#D81F25]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                 </svg>
@@ -275,23 +270,23 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess, onOpenGuide, 
                 </div>
                 
                 {error && (
-                    <div className="w-full mt-4 p-3 rounded-md text-center text-sm bg-red-500/10 text-red-300 border border-red-500/30 font-poppins">
+                    <div className="w-full mt-4 p-3 rounded-md text-center text-sm bg-red-800/50 text-red-100 border border-red-400/30 font-poppins">
                         {error}
                     </div>
                 )}
             </main>
 
-            <footer className="w-full max-w-sm z-10 px-4 pb-8">
+            <footer className="w-full max-w-xs z-10 px-4 pb-8">
                 <div className="w-full text-center">
-                    <p className="font-poppins text-white/80 text-xs mb-2 font-bold tracking-wider">{t('dontHaveAccount').toUpperCase()}</p>
+                    <p className="font-poppins text-white text-xs mb-2 font-semibold tracking-wider">{t('dontHaveAccount').toUpperCase()}</p>
                     <button
                         onClick={handleRegister}
                         disabled={isRegistering}
-                        className="w-full py-4 bg-white/10 border-2 border-white/20 rounded-xl text-white font-russo font-bold text-xl tracking-wider hover:bg-white/20 disabled:opacity-70 disabled:cursor-not-allowed transition-all duration-200 shadow-lg"
+                        className="w-full py-3 bg-white rounded-lg text-[#D81F25] font-russo font-bold text-xl tracking-wider hover:bg-gray-200 disabled:opacity-70 disabled:cursor-not-allowed transition-all duration-200 shadow-lg active:scale-95"
                     >
                         {isRegistering ? (
                             <div className="flex justify-center items-center h-[28px]">
-                                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <svg className="animate-spin h-5 w-5 text-[#D81F25]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                 </svg>
