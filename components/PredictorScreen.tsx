@@ -128,7 +128,7 @@ const PredictorView = React.memo((props: {
                         draggable="false" onContextMenu={(e) => e.preventDefault()}
                     />
 
-                    <div className="relative w-48 h-48 md:w-56 md:h-56 flex items-center justify-center mt-16">
+                    <div className="relative w-48 h-48 md:w-56 md:h-56 flex items-center justify-center mt-4">
                         <div className="wandering-arc-1"></div>
                         <div className="wandering-arc-2"></div>
                         <div className="wandering-arc-3"></div>
@@ -139,7 +139,7 @@ const PredictorView = React.memo((props: {
                         </p>
                     </div>
 
-                    <div className="w-full max-w-xs mt-8">
+                    <div className="w-full max-w-xs mt-6">
                          <button 
                             onClick={buttonAction}
                             disabled={isButtonDisabled}
