@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import * as authService from '../services/authService';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -94,141 +92,162 @@ const TestPostbackScreen: React.FC<TestPostbackScreenProps> = ({ onBack }) => {
   }
 
   return (
-    <div className="w-full h-full flex flex-col text-gray-200">
-      <header className="flex items-center mb-4 flex-shrink-0">
-        <div className="w-10">
-          <button onClick={onBack} className="p-2 rounded-full text-gray-300 hover:bg-white/10" aria-label={t('goBack')}>
-            <ArrowLeftIcon className="w-6 h-6" />
-          </button>
-        </div>
-        <h1 className="text-xl md:text-2xl font-russo text-red-400 tracking-wide text-center flex-grow uppercase">{t('postbackTestingTool')}</h1>
-        <div className="w-10"></div>
-      </header>
+    <div className="w-full h-screen bg-[#f0f0f0] text-black flex flex-col font-poppins relative overflow-hidden">
+        <style>{`
+            .swoop-bg::before {
+                content: '';
+                position: absolute;
+                top: -25vh;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 200vw;
+                height: 50vh; /* Smaller swoop for this screen */
+                background: linear-gradient(180deg, #d92121, #b50000);
+                border-radius: 0 0 50% 50%;
+                z-index: 0;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            }
+        `}</style>
+        <div className="absolute inset-0 swoop-bg"></div>
 
-      <div className="flex-grow overflow-y-auto px-1">
-        <p className="text-center text-gray-400 text-sm mb-4 font-poppins">
-          {t('postbackToolDescription')}
-        </p>
-        
-        <div className="text-center mb-6">
-            <button
-                onClick={() => setShowGuide(true)}
-                className="px-4 py-2 text-sm bg-red-500/10 text-red-300 font-semibold rounded-lg hover:bg-red-500/20 transition-colors"
-            >
-                {t('viewSetupGuide')}
-            </button>
-        </div>
+        <div className="relative z-10 flex-grow w-full h-full flex flex-col">
+            <header className="flex items-center p-6 flex-shrink-0 text-white">
+                <div className="w-10">
+                <button onClick={onBack} className="p-2 -ml-2 rounded-full hover:bg-white/20" aria-label={t('goBack')}>
+                    <ArrowLeftIcon className="w-6 h-6" />
+                </button>
+                </div>
+                <h1 className="text-xl md:text-2xl font-bold tracking-wide text-center flex-grow uppercase">{t('postbackTestingTool')}</h1>
+                <div className="w-10"></div>
+            </header>
 
-        <div className="space-y-4">
-          <div>
-            <label htmlFor="userIdTest" className="text-sm font-semibold text-gray-400 font-poppins">
-              {t('userIdToTest')}
-            </label>
-            <input
-              id="userIdTest"
-              type="text"
-              value={userId}
-              onChange={(e) => setUserId(e.target.value)}
-              placeholder="testuser123"
-              className="mt-2 w-full px-4 py-3 bg-black/30 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500/50 transition duration-300"
-            />
-          </div>
-          
-          {error && (
-              <div className="p-3 rounded-lg text-center text-sm bg-red-500/10 text-red-300 border border-red-500/30">
-                  {error}
+            <main className="flex-grow overflow-y-auto px-4 pb-8">
+              <div className="max-w-md mx-auto bg-white rounded-2xl p-6 shadow-lg">
+                <p className="text-center text-gray-600 text-sm mb-4 font-sans">
+                  {t('postbackToolDescription')}
+                </p>
+                
+                <div className="text-center mb-6">
+                    <button
+                        onClick={() => setShowGuide(true)}
+                        className="px-4 py-2 text-sm bg-red-100 text-red-700 font-semibold rounded-lg hover:bg-red-200 transition-colors"
+                    >
+                        {t('viewSetupGuide')}
+                    </button>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <label htmlFor="userIdTest" className="text-sm font-semibold text-gray-700 font-sans">
+                      {t('userIdToTest')}
+                    </label>
+                    <input
+                      id="userIdTest"
+                      type="text"
+                      value={userId}
+                      onChange={(e) => setUserId(e.target.value)}
+                      placeholder="testuser123"
+                      className="mt-2 w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-200"
+                    />
+                  </div>
+                  
+                  {error && (
+                      <div className="p-3 rounded-lg text-center text-sm bg-red-100 text-red-800 border border-red-200">
+                          {error}
+                      </div>
+                  )}
+                  {message && (
+                      <div className="p-3 rounded-lg text-center text-sm bg-green-100 text-green-800 border border-green-200">
+                          {message}
+                      </div>
+                  )}
+
+                  <button
+                    onClick={() => handleAction(authService.testRegistration)}
+                    disabled={isLoading}
+                    className="w-full py-3 bg-red-500 rounded-xl text-white font-bold text-lg hover:bg-red-600 disabled:opacity-70 transition duration-300"
+                  >
+                    {t('testRegistration')}
+                  </button>
+                  <button
+                    onClick={() => handleAction(authService.testFirstDeposit, 10)}
+                    disabled={isLoading}
+                    className="w-full py-3 bg-red-500 rounded-xl text-white font-bold text-lg hover:bg-red-600 disabled:opacity-70 transition duration-300"
+                  >
+                    {t('testFirstDeposit')}
+                  </button>
+                  <button
+                    onClick={() => handleAction(authService.testReDeposit, 5)}
+                    disabled={isLoading}
+                    className="w-full py-3 bg-red-500 rounded-xl text-white font-bold text-lg hover:bg-red-600 disabled:opacity-70 transition duration-300"
+                  >
+                    {t('testReDeposit')}
+                  </button>
+
+                  <div className="w-1/4 h-px bg-gray-200 my-3 mx-auto"></div>
+
+                  <button
+                    onClick={() => handleAction(authService.clearUserData)}
+                    disabled={isLoading}
+                    className="w-full py-3 bg-gray-600 rounded-xl text-white font-bold text-lg hover:bg-gray-700 disabled:opacity-70 transition duration-300"
+                  >
+                    {t('clearUserData')}
+                  </button>
+                </div>
+                
+                {/* --- NEW PROMO CODE SECTION --- */}
+                <div className="w-1/2 h-px bg-gray-200 my-6 mx-auto"></div>
+                <div className="space-y-4 pb-4">
+                  <h2 className="text-center font-bold text-lg text-gray-800">{t('updatePromoCode')}</h2>
+                  <div>
+                    <label htmlFor="newPromoCode" className="text-sm font-semibold text-gray-700 font-sans">
+                      {t('newPromoCode')}
+                    </label>
+                    <input
+                      id="newPromoCode"
+                      type="text"
+                      value={newPromoCode}
+                      onChange={(e) => setNewPromoCode(e.target.value)}
+                      placeholder="NEWPROMO25"
+                      className="mt-2 w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-200"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="adminPassword" className="text-sm font-semibold text-gray-700 font-sans">
+                      {t('adminPassword')}
+                    </label>
+                    <input
+                      id="adminPassword"
+                      type="password"
+                      value={adminPassword}
+                      onChange={(e) => setAdminPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className="mt-2 w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-200"
+                    />
+                  </div>
+
+                  {updateError && (
+                    <div className="p-3 rounded-lg text-center text-sm bg-red-100 text-red-800 border border-red-200">
+                      {updateError}
+                    </div>
+                  )}
+                  {updateMessage && (
+                    <div className="p-3 rounded-lg text-center text-sm bg-green-100 text-green-800 border border-green-200">
+                      {updateMessage}
+                    </div>
+                  )}
+
+                  <button
+                    onClick={handleUpdatePromoCode}
+                    disabled={isUpdating}
+                    className="w-full py-3 bg-red-600 rounded-xl text-white font-bold text-lg hover:bg-red-700 disabled:opacity-70 transition duration-300 shadow-md"
+                  >
+                    {isUpdating ? t('updating') : t('updatePromocodeButton')}
+                  </button>
+                </div>
               </div>
-          )}
-          {message && (
-              <div className="p-3 rounded-lg text-center text-sm bg-green-500/10 text-green-300 border border-green-500/30">
-                  {message}
-              </div>
-          )}
-
-          <button
-            onClick={() => handleAction(authService.testRegistration)}
-            disabled={isLoading}
-            className="w-full py-3 bg-transparent border-2 border-red-500/60 rounded-xl text-red-400 font-russo font-bold text-lg hover:bg-red-500/10 disabled:opacity-70 transition duration-300"
-          >
-            {t('testRegistration')}
-          </button>
-          <button
-            onClick={() => handleAction(authService.testFirstDeposit, 10)}
-            disabled={isLoading}
-            className="w-full py-3 bg-transparent border-2 border-red-500/60 rounded-xl text-red-400 font-russo font-bold text-lg hover:bg-red-500/10 disabled:opacity-70 transition duration-300"
-          >
-            {t('testFirstDeposit')}
-          </button>
-          <button
-            onClick={() => handleAction(authService.testReDeposit, 5)}
-            disabled={isLoading}
-            className="w-full py-3 bg-transparent border-2 border-red-500/60 rounded-xl text-red-400 font-russo font-bold text-lg hover:bg-red-500/10 disabled:opacity-70 transition duration-300"
-          >
-            {t('testReDeposit')}
-          </button>
-
-          <div className="w-1/4 h-px bg-red-500/20 my-3 mx-auto"></div>
-
-          <button
-            onClick={() => handleAction(authService.clearUserData)}
-            disabled={isLoading}
-            className="w-full py-3 bg-transparent border-2 border-gray-500/60 rounded-xl text-gray-400 font-russo font-bold text-lg hover:bg-gray-500/10 disabled:opacity-70 transition duration-300"
-          >
-            {t('clearUserData')}
-          </button>
+            </main>
         </div>
-        
-        {/* --- NEW PROMO CODE SECTION --- */}
-        <div className="w-1/2 h-px bg-red-500/20 my-6 mx-auto"></div>
-        <div className="space-y-4 pb-4">
-          <h2 className="text-center font-russo text-lg text-gray-300">{t('updatePromoCode')}</h2>
-          <div>
-            <label htmlFor="newPromoCode" className="text-sm font-semibold text-gray-400 font-poppins">
-              {t('newPromoCode')}
-            </label>
-            <input
-              id="newPromoCode"
-              type="text"
-              value={newPromoCode}
-              onChange={(e) => setNewPromoCode(e.target.value)}
-              placeholder="NEWPROMO25"
-              className="mt-2 w-full px-4 py-3 bg-black/30 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500/50 transition duration-300"
-            />
-          </div>
-          <div>
-            <label htmlFor="adminPassword" className="text-sm font-semibold text-gray-400 font-poppins">
-              {t('adminPassword')}
-            </label>
-            <input
-              id="adminPassword"
-              type="password"
-              value={adminPassword}
-              onChange={(e) => setAdminPassword(e.target.value)}
-              placeholder="••••••••"
-              className="mt-2 w-full px-4 py-3 bg-black/30 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500/50 transition duration-300"
-            />
-          </div>
-
-          {updateError && (
-            <div className="p-3 rounded-lg text-center text-sm bg-red-500/10 text-red-300 border border-red-500/30">
-              {updateError}
-            </div>
-          )}
-          {updateMessage && (
-            <div className="p-3 rounded-lg text-center text-sm bg-green-500/10 text-green-300 border border-green-500/30">
-              {updateMessage}
-            </div>
-          )}
-
-          <button
-            onClick={handleUpdatePromoCode}
-            disabled={isUpdating}
-            className="w-full py-3 bg-gradient-to-b from-red-500 to-red-700 rounded-xl text-white font-russo font-bold text-lg hover:bg-red-700 disabled:opacity-70 transition duration-300 shadow-[0_5px_15px_rgba(255,82,82,0.4)]"
-          >
-            {isUpdating ? t('updating') : t('updatePromocodeButton')}
-          </button>
-        </div>
-      </div>
     </div>
   );
 };

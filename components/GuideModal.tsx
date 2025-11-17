@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -54,87 +52,90 @@ const GuideModal: React.FC<GuideModalProps> = ({ onClose }) => {
     };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" aria-modal="true" role="dialog">
-      <div className="w-full max-w-lg bg-gradient-to-b from-[#2a070b] to-[#1a0204] text-gray-200 rounded-2xl p-6 md:p-8 flex flex-col animate-fade-in shadow-2xl shadow-red-500/20 border border-red-500/20">
-        <h1 className="text-3xl font-russo text-center text-red-400 mb-2 tracking-wide uppercase">{t('howToGetAccess')}</h1>
-        <p className="text-center text-gray-400 mb-6 font-poppins">{t('followStepsToUnlock')}</p>
-        
-        <div className="overflow-y-auto max-h-[60vh] pr-2 font-poppins">
-            <div className="space-y-4 text-gray-300">
-            <div className="flex items-start gap-4 p-3 bg-black/20 rounded-lg">
-                <div className="flex-shrink-0 pt-1 font-bold text-red-400 text-xl">1.</div>
-                <div>
-                <p>{t('guideStep1')}</p>
-                </div>
-            </div>
-            <div className="flex items-start gap-4 p-3 bg-black/20 rounded-lg">
-                <div className="flex-shrink-0 pt-1 font-bold text-red-400 text-xl">2.</div>
-                <div>
-                <p>{t('guideStep2')}</p>
-                </div>
-            </div>
-            <div className="flex items-start gap-4 p-3 bg-black/20 rounded-lg">
-                <div className="flex-shrink-0 pt-1 font-bold text-red-400 text-xl">3.</div>
-                <div>
-                <p>{t('guideStep3')}</p>
-                </div>
-            </div>
-            <div className="flex items-start gap-4 p-3 bg-black/20 rounded-lg items-center">
-                <div className="flex-shrink-0 font-bold text-red-400 text-xl">4.</div>
-                <div className="flex-grow">
-                <p>{t('guideStep4')}</p>
-                <div className="mt-2 flex items-center justify-between bg-black/30 p-2 rounded-md">
-                    <span className="font-mono text-lg text-red-300 font-bold">{promoCode}</span>
-                    <button onClick={handleCopy} className="p-1 text-gray-400 hover:text-white transition-colors" aria-label={t('copyPromocode')}>
-                        {copied ? <CheckIcon className="w-5 h-5 text-green-400" /> : <CopyIcon className="w-5 h-5" />}
-                    </button>
-                </div>
-                </div>
-            </div>
-            </div>
-            
-            <div className="w-full h-px bg-red-500/20 my-6"></div>
-
-            <div>
-                <h2 className="text-xl font-russo text-center text-red-400 mb-4 uppercase">{t('howToFindPlayerId')}</h2>
-                <div className="space-y-4 text-gray-300">
-                    <div className="flex items-start gap-4 p-3 bg-black/20 rounded-lg">
-                        <div className="flex-shrink-0 pt-1 font-bold text-red-400 text-xl">1.</div>
-                        <div><p>{t('playerIdStep1')}</p></div>
-                    </div>
-                    <div className="flex items-start gap-4 p-3 bg-black/20 rounded-lg">
-                        <div className="flex-shrink-0 pt-1 font-bold text-red-400 text-xl">2.</div>
-                        <div><p>{t('playerIdStep2')}</p></div>
-                    </div>
-                    <div className="flex items-start gap-4 p-3 bg-black/20 rounded-lg">
-                        <div className="flex-shrink-0 pt-1 font-bold text-red-400 text-xl">3.</div>
-                        <div><p>{t('playerIdStep3')}</p></div>
-                    </div>
-                    <div className="flex items-start gap-4 p-3 bg-black/20 rounded-lg">
-                        <div className="flex-shrink-0 pt-1 font-bold text-red-400 text-xl">4.</div>
-                        <div><p>{t('playerIdStep4')}</p></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <button
-          onClick={onClose}
-          className="mt-8 w-full py-4 bg-gradient-to-b from-red-500 to-red-700 rounded-xl text-white font-russo font-bold text-xl tracking-wider uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_5px_20px_rgba(255,82,82,0.5)] hover:shadow-[0_5px_30px_rgba(255,82,82,0.7)] hover:scale-105 active:scale-100 flex-shrink-0"
-          aria-label={t('closeGuide')}
-        >
-          {t('gotIt')}
-        </button>
-      </div>
-       <style>{`
+    <div className="fixed inset-0 bg-[#f0f0f0] z-50 flex flex-col animate-fade-in font-poppins" aria-modal="true" role="dialog">
+      <style>{`
+        .swoop-bg::before {
+            content: '';
+            position: absolute;
+            top: -25vh;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200vw;
+            height: 50vh;
+            background: linear-gradient(180deg, #d92121, #b50000);
+            border-radius: 0 0 50% 50%;
+            z-index: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
         @keyframes fade-in {
-          from { opacity: 0; transform: scale(0.95); }
-          to { opacity: 1; transform: scale(1); }
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
         .animate-fade-in {
           animation: fade-in 0.3s ease-out forwards;
         }
       `}</style>
+      <div className="absolute inset-0 swoop-bg"></div>
+      
+      <div className="relative z-10 flex-grow w-full h-full flex flex-col">
+          <header className="w-full text-center p-6 pt-12 flex-shrink-0">
+              <h1 className="text-3xl font-extrabold text-white tracking-wide uppercase">{t('howToGetAccess')}</h1>
+              <p className="text-white/80 mt-1">{t('followStepsToUnlock')}</p>
+          </header>
+
+          <main className="flex-grow overflow-y-auto px-4 pb-4">
+              <div className="max-w-lg mx-auto bg-white rounded-2xl p-6 shadow-lg space-y-6">
+                <div className="space-y-3 text-gray-700">
+                    <div className="flex items-start gap-4">
+                        <div className="flex-shrink-0 pt-1 font-bold text-red-500 text-2xl">1.</div>
+                        <p className="pt-1">{t('guideStep1')}</p>
+                    </div>
+                    <div className="flex items-start gap-4">
+                        <div className="flex-shrink-0 pt-1 font-bold text-red-500 text-2xl">2.</div>
+                        <p className="pt-1">{t('guideStep2')}</p>
+                    </div>
+                    <div className="flex items-start gap-4">
+                        <div className="flex-shrink-0 pt-1 font-bold text-red-500 text-2xl">3.</div>
+                        <p className="pt-1">{t('guideStep3')}</p>
+                    </div>
+                    <div className="flex items-start gap-4">
+                        <div className="flex-shrink-0 pt-1 font-bold text-red-500 text-2xl">4.</div>
+                        <div className="flex-grow">
+                          <p>{t('guideStep4')}</p>
+                          <div className="mt-2 flex items-center justify-between bg-gray-100 p-2 rounded-md border border-gray-200">
+                              <span className="font-mono text-lg text-red-600 font-bold">{promoCode}</span>
+                              <button onClick={handleCopy} className="p-1 text-gray-500 hover:text-black transition-colors" aria-label={t('copyPromocode')}>
+                                  {copied ? <CheckIcon className="w-5 h-5 text-green-500" /> : <CopyIcon className="w-5 h-5" />}
+                              </button>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div className="w-full h-px bg-gray-200 my-6"></div>
+
+                <div>
+                    <h2 className="text-xl font-bold text-center text-black mb-4 uppercase">{t('howToFindPlayerId')}</h2>
+                    <div className="space-y-3 text-gray-700">
+                        <div className="flex items-start gap-4"><div className="flex-shrink-0 pt-1 font-bold text-red-500 text-2xl">1.</div><p className="pt-1">{t('playerIdStep1')}</p></div>
+                        <div className="flex items-start gap-4"><div className="flex-shrink-0 pt-1 font-bold text-red-500 text-2xl">2.</div><p className="pt-1">{t('playerIdStep2')}</p></div>
+                        <div className="flex items-start gap-4"><div className="flex-shrink-0 pt-1 font-bold text-red-500 text-2xl">3.</div><p className="pt-1">{t('playerIdStep3')}</p></div>
+                        <div className="flex items-start gap-4"><div className="flex-shrink-0 pt-1 font-bold text-red-500 text-2xl">4.</div><p className="pt-1">{t('playerIdStep4')}</p></div>
+                    </div>
+                </div>
+              </div>
+          </main>
+        
+          <footer className="w-full p-4 bg-white flex items-center justify-center shadow-[0_-2px_10px_rgba(0,0,0,0.1)] mt-auto flex-shrink-0">
+            <button
+            onClick={onClose}
+            className="w-full max-w-xs py-4 bg-[#d10000] rounded-xl text-white font-bold text-xl tracking-wider uppercase transition-all duration-300 shadow-lg hover:bg-red-800 active:scale-95"
+            aria-label={t('closeGuide')}
+            >
+            {t('gotIt')}
+            </button>
+          </footer>
+      </div>
     </div>
   );
 };

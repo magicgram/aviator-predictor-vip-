@@ -38,11 +38,9 @@ const LoginContainer: React.FC<LoginContainerProps> = ({ onLoginSuccess }) => {
 
   const handleAdminClose = useCallback(() => setShowAdminModal(false), []);
   const handleBackToLogin = useCallback(() => setCurrentView('login'), []);
-  
-  const isTestPostbackView = currentView === 'testPostback';
 
   return (
-    <div className={`w-full h-full flex items-center justify-center ${isTestPostbackView ? 'p-4' : ''}`}>
+    <div className="w-full h-screen">
       {isGuideOpen && <GuideModal onClose={handleCloseGuide} />}
       {showAdminModal && <AdminAuthModal onSuccess={handleAdminSuccess} onClose={handleAdminClose} />}
       <Sidebar 
@@ -53,18 +51,14 @@ const LoginContainer: React.FC<LoginContainerProps> = ({ onLoginSuccess }) => {
         isLoggedIn={false}
         onTestPostbackClick={handleTestPostbackClick}
       />
-      {isTestPostbackView ? (
-        <div className="w-full max-w-md h-[90vh] max-h-[700px] flex flex-col p-6 bg-gradient-to-b from-[#2a070b] to-[#1a0204] text-gray-200 rounded-2xl shadow-2xl shadow-red-500/20 border border-red-500/20 relative">
-          <TestPostbackScreen onBack={handleBackToLogin} />
-        </div>
+      {currentView === 'testPostback' ? (
+        <TestPostbackScreen onBack={handleBackToLogin} />
       ) : (
-        <div className="w-full h-full">
-            <LoginScreen 
-                onLoginSuccess={onLoginSuccess}
-                onOpenSidebar={handleOpenSidebar}
-                onOpenGuide={handleOpenGuide}
-            />
-        </div>
+        <LoginScreen 
+            onLoginSuccess={onLoginSuccess}
+            onOpenSidebar={handleOpenSidebar}
+            onOpenGuide={handleOpenGuide}
+        />
       )}
     </div>
   );

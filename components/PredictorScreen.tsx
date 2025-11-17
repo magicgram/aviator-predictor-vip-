@@ -24,15 +24,49 @@ const MenuIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
 const LimitReachedView = React.memo(({ handleDepositRedirect }: { handleDepositRedirect: () => void; }) => {
   const { t } = useLanguage();
   return (
-    <div className="text-center p-8 bg-gradient-to-b from-[#2a070b] to-[#1a0204] text-gray-200 rounded-2xl shadow-2xl shadow-red-500/20 border border-red-500/20 w-full max-w-md">
-      <h2 className="text-2xl font-russo text-red-400 uppercase">{t('limitReachedTitle')}</h2>
-      <p className="mt-4 text-gray-300 font-poppins">{t('limitReachedText')}</p>
-      <button 
-        onClick={handleDepositRedirect}
-        className="mt-6 w-full py-4 bg-gradient-to-b from-red-500 to-red-700 rounded-xl text-white font-russo font-bold text-xl tracking-wider uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_5px_20px_rgba(255,82,82,0.5)] hover:shadow-[0_5px_30px_rgba(255,82,82,0.7)] hover:scale-105 active:scale-100"
-      >
-        {t('depositNow')}
-      </button>
+     <div className="w-full h-screen bg-[#f0f0f0] text-black flex flex-col font-poppins relative overflow-hidden">
+        <style>{`
+            .swoop-bg::before {
+                content: '';
+                position: absolute;
+                top: -25vh;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 200vw;
+                height: 68vh;
+                background: linear-gradient(180deg, #d92121, #b50000);
+                border-radius: 0 0 50% 50%;
+                z-index: 0;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            }
+        `}</style>
+        <div className="absolute inset-0 swoop-bg"></div>
+         <div className="relative z-10 flex-grow w-full h-full flex flex-col items-center justify-between">
+            <header className="w-full text-center p-6 pt-12">
+                <h1 className="text-4xl font-extrabold text-white tracking-normal leading-tight uppercase">
+                    {t('limitReachedTitle')}
+                </h1>
+            </header>
+
+            <main className="flex-grow w-full flex flex-col items-center justify-center text-center px-6 -mt-20">
+                 <img 
+                    src="https://i.postimg.cc/W4cFfhV3/Picsart-25-11-16-12-52-34-932.png" 
+                    alt="Aviator Plane" 
+                    className="w-full max-w-[280px] drop-shadow-[0_10px_15px_rgba(0,0,0,0.2)] select-none z-10 opacity-50"
+                    draggable="false" onContextMenu={(e) => e.preventDefault()}
+                />
+                <p className="mt-8 max-w-sm text-gray-700 font-poppins">{t('limitReachedText')}</p>
+            </main>
+
+            <footer className="w-full p-4 bg-white flex items-center justify-center shadow-[0_-2px_10px_rgba(0,0,0,0.1)] mt-auto flex-shrink-0">
+                <button 
+                    onClick={handleDepositRedirect}
+                    className="w-full max-w-xs py-4 bg-[#d10000] rounded-xl text-white font-bold text-xl tracking-wider uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:bg-red-800 active:scale-95"
+                >
+                    {t('depositNow')}
+                </button>
+            </footer>
+        </div>
     </div>
   );
 });
@@ -277,18 +311,12 @@ const PredictorScreen: React.FC<PredictorScreenProps> = ({ user, onLogout }) => 
   const handleAdminClose = useCallback(() => setShowAdminModal(false), []);
   const handleBackToPredictor = useCallback(() => setCurrentView('predictor'), []);
 
-  const mainContainerClasses = "w-full min-h-screen bg-gradient-to-b from-[#3a0a0f] to-[#1a0204]";
-
   if (predictionsLeft <= 0 && !isPredicting) {
-    return (
-        <div className={`${mainContainerClasses} flex items-center justify-center p-4`}>
-            <LimitReachedView handleDepositRedirect={handleDepositRedirect} />
-        </div>
-    );
+    return <LimitReachedView handleDepositRedirect={handleDepositRedirect} />;
   }
   
   return (
-    <div className={mainContainerClasses}>
+    <div className="w-full min-h-screen">
       {isGuideOpen && <GuideModal onClose={() => setIsGuideOpen(false)} />}
       {showAdminModal && <AdminAuthModal onSuccess={handleAdminSuccess} onClose={handleAdminClose} />}
       <Sidebar 
@@ -312,11 +340,7 @@ const PredictorScreen: React.FC<PredictorScreenProps> = ({ user, onLogout }) => 
         />
       )}
       {currentView === 'testPostback' && 
-        <div className="w-full h-full flex items-center justify-center p-4">
-          <div className="w-full max-w-md h-[90vh] max-h-[700px] flex flex-col p-6 bg-gradient-to-b from-[#2a070b] to-[#1a0204] text-gray-200 rounded-2xl shadow-2xl shadow-red-500/20 border border-red-500/20 relative">
-              <TestPostbackScreen onBack={handleBackToPredictor} />
-          </div>
-        </div>
+        <TestPostbackScreen onBack={handleBackToPredictor} />
       }
     </div>
   );
