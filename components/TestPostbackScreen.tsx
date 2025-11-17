@@ -65,7 +65,7 @@ const TestPostbackScreen: React.FC<TestPostbackScreenProps> = ({ onBack }) => {
     setUpdateError(null);
 
     try {
-      const response = await fetch('/api/set-promo-code', {
+      const response = await fetch('/api/promo-code', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

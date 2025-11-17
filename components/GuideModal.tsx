@@ -27,7 +27,10 @@ const GuideModal: React.FC<GuideModalProps> = ({ onClose }) => {
     useEffect(() => {
         const fetchPromoCode = async () => {
             try {
-                const response = await fetch('/api/get-promo-code');
+                const response = await fetch('/api/promo-code');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 const data = await response.json();
                 if (data.success && data.promoCode) {
                     setPromoCode(data.promoCode);

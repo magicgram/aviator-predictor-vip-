@@ -20,9 +20,9 @@ const LoginContainer: React.FC<LoginContainerProps> = ({ onLoginSuccess }) => {
     setIsSidebarOpen(false);
   }, []);
 
-  const handleOpenSidebar = useCallback(() => setIsSidebarOpen(true), []);
   const handleCloseSidebar = useCallback(() => setIsSidebarOpen(false), []);
-
+  const handleOpenSidebar = useCallback(() => setIsSidebarOpen(true), []);
+  
   const handleOpenGuide = useCallback(() => setIsGuideOpen(true), []);
   const handleCloseGuide = useCallback(() => setIsGuideOpen(false), []);
 
