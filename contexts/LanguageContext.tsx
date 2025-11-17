@@ -17,6 +17,16 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   useEffect(() => {
     localStorage.setItem('language', language);
   }, [language]);
+  
+  useEffect(() => {
+    const rtlLanguages = ['ar', 'ur', 'fa', 'he'];
+    if (rtlLanguages.includes(language)) {
+      document.documentElement.setAttribute('dir', 'rtl');
+    } else {
+      document.documentElement.setAttribute('dir', 'ltr');
+    }
+  }, [language]);
+
 
   const setLanguage = (langCode: string) => {
     setLanguageState(langCode);
