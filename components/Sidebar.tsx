@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { languages } from '../lib/i18n';
@@ -144,12 +145,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onNavigate, onLogout
                                 </div>
                             )}
                         </button>
-                        <div>
-                            <p className="font-bold text-lg text-white truncate max-w-32">{playerId ? t('welcomeUser', {playerId}) : t('welcome')}</p>
+                        <div className="overflow-hidden">
+                            <p className="font-bold text-lg text-white truncate w-full">{playerId ? t('welcomeUser', {playerId}) : t('welcome')}</p>
                             <p className="text-sm text-white/80 font-poppins">Aviator Predictor VIP</p>
                         </div>
                     </div>
-                    <button onClick={onClose} className="p-1 -mt-1 -mr-1 rounded-full text-white/70 hover:bg-white/10 hover:text-white transition-colors">
+                    <button onClick={onClose} className="p-1 -mt-1 -mr-1 rounded-full text-white/70 hover:bg-white/10 hover:text-white transition-colors flex-shrink-0">
                         <CloseIcon className="w-6 h-6"/>
                     </button>
                 </div>
@@ -161,13 +162,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onNavigate, onLogout
                         onClick={() => onNavigate('predictor')}
                         disabled={!isLoggedIn}
                     >
-                        <HomeIcon className="w-6 h-6 text-gray-500 transition-colors group-disabled:text-gray-400 group-hover:text-red-500"/>
-                        <span className="font-semibold">{t('predictorHome')}</span>
+                        <div className="flex-shrink-0">
+                             <HomeIcon className="w-6 h-6 text-gray-500 transition-colors group-disabled:text-gray-400 group-hover:text-red-500"/>
+                        </div>
+                        <span className="font-semibold whitespace-normal leading-snug">{t('predictorHome')}</span>
                     </NavButton>
 
                     <NavButton onClick={onTestPostbackClick}>
-                         <TestIcon className="w-6 h-6 text-gray-500 transition-colors group-hover:text-red-500"/>
-                         <span className="font-semibold">{t('testPostback')}</span>
+                         <div className="flex-shrink-0">
+                            <TestIcon className="w-6 h-6 text-gray-500 transition-colors group-hover:text-red-500"/>
+                         </div>
+                         <span className="font-semibold whitespace-normal leading-snug">{t('testPostback')}</span>
                     </NavButton>
 
                      {languages.length > 1 && (
@@ -177,10 +182,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onNavigate, onLogout
                                 className="group flex w-full items-center justify-between gap-4 p-3 rounded-lg text-left text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-200"
                             >
                                 <div className="flex items-center gap-4">
-                                    <LanguageIcon className="w-6 h-6 text-gray-500 transition-colors group-hover:text-red-500" />
-                                    <span className="font-semibold">{t('language')}</span>
+                                    <div className="flex-shrink-0">
+                                        <LanguageIcon className="w-6 h-6 text-gray-500 transition-colors group-hover:text-red-500" />
+                                    </div>
+                                    <span className="font-semibold whitespace-normal leading-snug">{t('language')}</span>
                                 </div>
-                                <svg className={`w-5 h-5 text-gray-500 transition-transform group-hover:text-red-500 ${isLangMenuOpen ? 'rotate-180' : ''}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                                <svg className={`w-5 h-5 text-gray-500 transition-transform group-hover:text-red-500 flex-shrink-0 ${isLangMenuOpen ? 'rotate-180' : ''}`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                                 </svg>
                             </button>
@@ -204,15 +211,17 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onNavigate, onLogout
             
             <div className="p-2 border-t border-gray-200 flex-shrink-0">
                 <div className="flex items-center justify-between">
-                    <div>
+                    <div className="flex-grow">
                         {isLoggedIn && (
                              <NavButton onClick={onLogout}>
-                                <LogoutIcon className="w-6 h-6 text-gray-500 transition-colors group-hover:text-red-500"/>
-                                <span className="font-semibold">{t('logout')}</span>
+                                <div className="flex-shrink-0">
+                                    <LogoutIcon className="w-6 h-6 text-gray-500 transition-colors group-hover:text-red-500"/>
+                                </div>
+                                <span className="font-semibold whitespace-normal leading-snug">{t('logout')}</span>
                             </NavButton>
                         )}
                     </div>
-                    <div className="flex items-center justify-end group flex-1 pr-4">
+                    <div className="flex items-center justify-end group flex-shrink-0 pr-4 pl-2">
                         <img 
                             src="https://i.postimg.cc/YSBsSRCd/Picsart-25-11-01-11-32-07-745.png" 
                             alt="NexusPlay Logo" 

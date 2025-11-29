@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -68,14 +69,14 @@ const AdminAuthModal: React.FC<AdminAuthModalProps> = ({ onClose, onSuccess }) =
             <button
               type="button"
               onClick={onClose}
-              className="py-3 bg-gray-200 rounded-xl text-gray-800 font-russo font-bold text-lg hover:bg-gray-300 transition duration-300"
+              className="py-3 px-2 min-h-[50px] h-auto bg-gray-200 rounded-xl text-gray-800 font-russo font-bold text-lg hover:bg-gray-300 transition duration-300 flex items-center justify-center text-center whitespace-pre-wrap leading-tight"
             >
               {t('cancel')}
             </button>
             <button
               type="submit"
               disabled={isLoading || !password}
-              className="py-3 bg-red-600 rounded-xl text-white font-russo font-bold text-lg tracking-wider transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed shadow-md hover:bg-red-700"
+              className="py-3 px-2 min-h-[50px] h-auto bg-red-600 rounded-xl text-white font-russo font-bold text-lg tracking-wider transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed shadow-md hover:bg-red-700 flex items-center justify-center text-center whitespace-pre-wrap leading-tight"
             >
               {isLoading ? t('verifying') : t('submit')}
             </button>

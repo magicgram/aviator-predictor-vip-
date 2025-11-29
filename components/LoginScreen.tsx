@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback } from 'react';
 import { verifyUser, VerificationResponse } from '../services/authService';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -39,7 +40,7 @@ const DepositMessage: React.FC<{
         <button
           onClick={onRegister}
           disabled={isRegistering}
-          className="w-full py-4 bg-[#ef4444] text-white font-poppins font-bold text-lg rounded-full transition-all hover:bg-red-600 active:bg-red-700 disabled:opacity-50"
+          className="w-full py-3 px-4 min-h-[56px] h-auto bg-[#ef4444] text-white font-poppins font-bold text-lg rounded-2xl transition-all hover:bg-red-600 active:bg-red-700 disabled:opacity-50 flex items-center justify-center text-center whitespace-pre-wrap leading-tight shadow-md"
         >
           {isRegistering ? (
             <div className="flex justify-center items-center">
@@ -55,7 +56,7 @@ const DepositMessage: React.FC<{
         </button>
         <button
           onClick={onBack}
-          className="w-full py-3 bg-gray-200 text-black font-poppins font-bold text-lg rounded-full transition-colors hover:bg-gray-300"
+          className="w-full py-3 px-4 min-h-[56px] h-auto bg-gray-200 text-black font-poppins font-bold text-lg rounded-2xl transition-colors hover:bg-gray-300 flex items-center justify-center text-center whitespace-pre-wrap leading-tight"
         >
           {t('back').toUpperCase()}
         </button>
@@ -87,7 +88,7 @@ const ReDepositMessage: React.FC<{
         <button
           onClick={onRegister}
           disabled={isRegistering}
-          className="w-full py-4 bg-[#ef4444] text-white font-poppins font-bold text-lg rounded-full transition-all hover:bg-red-600 active:bg-red-700 disabled:opacity-50"
+          className="w-full py-3 px-4 min-h-[56px] h-auto bg-[#ef4444] text-white font-poppins font-bold text-lg rounded-2xl transition-all hover:bg-red-600 active:bg-red-700 disabled:opacity-50 flex items-center justify-center text-center whitespace-pre-wrap leading-tight shadow-md"
         >
           {isRegistering ? (
             <div className="flex justify-center items-center">
@@ -103,7 +104,7 @@ const ReDepositMessage: React.FC<{
         </button>
         <button
           onClick={onBack}
-          className="w-full py-3 bg-gray-200 text-black font-poppins font-bold text-lg rounded-full transition-colors hover:bg-gray-300"
+          className="w-full py-3 px-4 min-h-[56px] h-auto bg-gray-200 text-black font-poppins font-bold text-lg rounded-2xl transition-colors hover:bg-gray-300 flex items-center justify-center text-center whitespace-pre-wrap leading-tight"
         >
           {t('back').toUpperCase()}
         </button>
@@ -158,13 +159,18 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                 if (newAttemptsCount >= 3) {
                     setError(t('noRegistrationFoundAfterAttempts'));
                 } else {
-                    setError(response.message || t('youAreNotRegistered'));
+                    setError(t('youAreNotRegistered'));
                 }
+            } else if (response.status === 'INVALID_ID') {
+                setError(t('invalidPlayerIdError'));
+            } else if (response.status === 'SERVER_ERROR') {
+                setError(t('serverErrorError'));
             } else {
                  if (response.success) {
                     setError(t('loginFailedNoCount'));
                 } else {
-                    setError(response.message || t('unknownErrorOccurred'));
+                    // Use generic error if status is unknown to ensure translation
+                    setError(t('unknownErrorError'));
                 }
             }
         }
@@ -191,7 +197,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
           window.location.href = data.link;
         }
       } else {
-        setError(data.message || t('registrationLinkNotAvailable'));
+        setError(t('registrationLinkNotAvailable'));
         setIsRegistering(false);
       }
     } catch (error) {
@@ -252,7 +258,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                       <button
                           onClick={handleContinue}
                           disabled={isLoading || !playerId}
-                          className="w-full py-4 bg-red-500 text-white font-russo font-bold text-lg uppercase rounded-full transition-all hover:bg-red-600 active:bg-red-700 disabled:opacity-50 shadow-md"
+                          className="w-full py-3 px-4 min-h-[56px] h-auto bg-red-500 text-white font-russo font-bold text-lg uppercase rounded-2xl transition-all hover:bg-red-600 active:bg-red-700 disabled:opacity-50 shadow-md flex items-center justify-center text-center whitespace-pre-wrap leading-tight"
                       >
                           {isLoading ? (
                               <div className="flex justify-center items-center h-[28px]">
@@ -271,7 +277,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                       <button
                           onClick={handleRegister}
                           disabled={isRegistering}
-                          className="w-full py-3 bg-slate-200 text-gray-800 font-russo font-bold text-lg uppercase rounded-full transition-all hover:bg-slate-300 disabled:opacity-50"
+                          className="w-full py-3 px-4 min-h-[56px] h-auto bg-slate-200 text-gray-800 font-russo font-bold text-lg uppercase rounded-2xl transition-all hover:bg-slate-300 disabled:opacity-50 flex items-center justify-center text-center whitespace-pre-wrap leading-tight"
                       >
                         {isRegistering ? (
                             <div className="flex justify-center items-center h-[28px]">

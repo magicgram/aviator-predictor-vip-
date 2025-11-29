@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import * as authService from '../services/authService';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -73,11 +74,11 @@ const TestPostbackScreen: React.FC<TestPostbackScreenProps> = ({ onBack }) => {
       const result = await response.json();
 
       if (response.ok && result.success) {
-        setUpdateMessage(result.message);
+        setUpdateMessage(result.message || t('promoCodeSuccess'));
         setNewPromoCode('');
         setAdminPassword('');
       } else {
-        setUpdateError(result.message || 'An unknown error occurred.');
+        setUpdateError(result.message || t('unknownErrorError'));
       }
     } catch (err) {
       setUpdateError(t('unexpectedErrorOccurred'));
@@ -165,21 +166,21 @@ const TestPostbackScreen: React.FC<TestPostbackScreenProps> = ({ onBack }) => {
                   <button
                     onClick={() => handleAction(authService.testRegistration)}
                     disabled={isLoading}
-                    className="w-full py-3 bg-red-500 rounded-xl text-white font-bold text-lg hover:bg-red-600 disabled:opacity-70 transition duration-300"
+                    className="w-full py-3 px-4 min-h-[56px] h-auto bg-red-500 rounded-xl text-white font-bold text-lg hover:bg-red-600 disabled:opacity-70 transition duration-300 flex items-center justify-center text-center whitespace-pre-wrap leading-tight"
                   >
                     {t('testRegistration')}
                   </button>
                   <button
                     onClick={() => handleAction(authService.testFirstDeposit, 10)}
                     disabled={isLoading}
-                    className="w-full py-3 bg-red-500 rounded-xl text-white font-bold text-lg hover:bg-red-600 disabled:opacity-70 transition duration-300"
+                    className="w-full py-3 px-4 min-h-[56px] h-auto bg-red-500 rounded-xl text-white font-bold text-lg hover:bg-red-600 disabled:opacity-70 transition duration-300 flex items-center justify-center text-center whitespace-pre-wrap leading-tight"
                   >
                     {t('testFirstDeposit')}
                   </button>
                   <button
                     onClick={() => handleAction(authService.testReDeposit, 5)}
                     disabled={isLoading}
-                    className="w-full py-3 bg-red-500 rounded-xl text-white font-bold text-lg hover:bg-red-600 disabled:opacity-70 transition duration-300"
+                    className="w-full py-3 px-4 min-h-[56px] h-auto bg-red-500 rounded-xl text-white font-bold text-lg hover:bg-red-600 disabled:opacity-70 transition duration-300 flex items-center justify-center text-center whitespace-pre-wrap leading-tight"
                   >
                     {t('testReDeposit')}
                   </button>
@@ -189,7 +190,7 @@ const TestPostbackScreen: React.FC<TestPostbackScreenProps> = ({ onBack }) => {
                   <button
                     onClick={() => handleAction(authService.clearUserData)}
                     disabled={isLoading}
-                    className="w-full py-3 bg-gray-600 rounded-xl text-white font-bold text-lg hover:bg-gray-700 disabled:opacity-70 transition duration-300"
+                    className="w-full py-3 px-4 min-h-[56px] h-auto bg-gray-600 rounded-xl text-white font-bold text-lg hover:bg-gray-700 disabled:opacity-70 transition duration-300 flex items-center justify-center text-center whitespace-pre-wrap leading-tight"
                   >
                     {t('clearUserData')}
                   </button>
@@ -240,7 +241,7 @@ const TestPostbackScreen: React.FC<TestPostbackScreenProps> = ({ onBack }) => {
                   <button
                     onClick={handleUpdatePromoCode}
                     disabled={isUpdating}
-                    className="w-full py-3 bg-red-600 rounded-xl text-white font-bold text-lg hover:bg-red-700 disabled:opacity-70 transition duration-300 shadow-md"
+                    className="w-full py-3 px-4 min-h-[56px] h-auto bg-red-600 rounded-xl text-white font-bold text-lg hover:bg-red-700 disabled:opacity-70 transition duration-300 shadow-md flex items-center justify-center text-center whitespace-pre-wrap leading-tight"
                   >
                     {isUpdating ? t('updating') : t('updatePromocodeButton')}
                   </button>

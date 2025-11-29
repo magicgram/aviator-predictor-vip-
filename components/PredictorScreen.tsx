@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import type { User } from '../types';
 import { usePrediction } from '../services/authService';
@@ -61,7 +62,7 @@ const LimitReachedView = React.memo(({ handleDepositRedirect }: { handleDepositR
             <footer className="w-full p-4 bg-white flex items-center justify-center shadow-[0_-2px_10px_rgba(0,0,0,0.1)] mt-auto flex-shrink-0">
                 <button 
                     onClick={handleDepositRedirect}
-                    className="w-full max-w-xs py-4 bg-[#d10000] rounded-xl text-white font-bold text-xl tracking-wider uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:bg-red-800 active:scale-95"
+                    className="w-full max-w-xs py-3 px-4 min-h-[56px] h-auto bg-[#d10000] rounded-xl text-white font-bold text-xl tracking-wider uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:bg-red-800 active:scale-95 flex items-center justify-center text-center whitespace-pre-wrap leading-tight"
                 >
                     {t('depositNow')}
                 </button>
@@ -177,7 +178,7 @@ const PredictorView = React.memo((props: {
                          <button 
                             onClick={buttonAction}
                             disabled={isButtonDisabled}
-                            className="w-full py-4 bg-[#d10000] rounded-xl text-white font-bold text-xl tracking-wider uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:bg-red-800 active:scale-95"
+                            className="w-full py-3 px-4 min-h-[56px] h-auto bg-[#d10000] rounded-xl text-white font-bold text-xl tracking-wider uppercase transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:bg-red-800 active:scale-95 flex items-center justify-center text-center whitespace-pre-wrap leading-tight"
                         >
                             {buttonText}
                         </button>
@@ -239,7 +240,11 @@ const PredictorScreen: React.FC<PredictorScreenProps> = ({ user, onLogout }) => 
     try {
       const result = await usePrediction(user.playerId);
       if (!result.success) {
-        alert(`${t('errorLabel')}: ${result.message || t('couldNotUsePrediction')}`);
+        let errorMessage = t('couldNotUsePrediction');
+        if (result.message === 'No predictions left.') errorMessage = t('noPredictionsLeftError');
+        if (result.message === 'User not found.') errorMessage = t('userNotFoundError');
+        
+        alert(`${t('errorLabel')}: ${errorMessage}`);
         setIsPredicting(false);
         return;
       }
@@ -296,7 +301,7 @@ const PredictorScreen: React.FC<PredictorScreenProps> = ({ user, onLogout }) => 
                 window.location.href = data.link;
             }
         } else {
-            alert(data.message || t('depositLinkNotAvailable'));
+            alert(t('depositLinkNotAvailable'));
         }
     } catch (error) {
         console.error('Failed to fetch deposit link:', error);
